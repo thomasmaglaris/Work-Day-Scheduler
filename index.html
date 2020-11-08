@@ -22,48 +22,48 @@
   <div class="container">
     <!-- Timeblocks go here -->
     <div class="row"></div>
-    <div class="col-md-1 row hour float">9am</div>
-    <input type="text" placeholder="Enter your scheduling tasks" id="9" class="col-md-10 row float past">
+    <div class="col-md-1 row hour float" data-time="9">9am</div>
+    <input type="text" placeholder="Enter your scheduling tasks" id="9" class="col-md-10 row float input"  data-index="1">
     <Button class="col-md-1 saveBtn saveBtn row float" value="9">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float ">10am</div>
-    <input type="text" id="10" class="col-md-10 row float present">
+    <div class="col-md-1 row hour float " data-time="10">10am</div>
+    <input type="text" id="10" class="col-md-10 row float input" data-index="2" >
     <Button class="col-md-1 saveBtn row float" value="10">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">11am</div>
-    <input type="text" id="11" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="11">11am</div>
+    <input type="text" id="11" class="col-md-10 row float input"  data-index="3">
     <Button class="col-md-1 saveBtn row float" value="11">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">12pm</div>
-    <input type="text" id="12" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="12">12pm</div>
+    <input type="text" id="12" class="col-md-10 row float input"  data-index="4">
     <Button class="col-md-1 saveBtn row float" value="12">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">1pm</div>
-    <input type="text" id="13" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="13">1pm</div>
+    <input type="text" id="13" class="col-md-10 row float input"  data-index="5">
     <Button class="col-md-1 saveBtn row float" value="13">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">2pm</div>
-    <input type="text" id="14" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="14">2pm</div>
+    <input type="text" id="14" class="col-md-10 row float input"  data-index="6">
     <Button class="col-md-1 saveBtn row float" value="14">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">3pm</div>
-    <input type="text" id="15" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="15">3pm</div>
+    <input type="text" id="15" class="col-md-10 row float input"  data-index="7">
     <Button class="col-md-1 saveBtn row float" value="15">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">4pm</div>
-    <input type=text id="16" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="16">4pm</div>
+    <input type=text id="16" class="col-md-10 row float input"  data-index="8">
     <Button class="col-md-1 saveBtn row float" value="16">Btn</Button>
 
     <div class="row"></div>
-    <div class="col-md-1 row hour float">5pm</div>
-    <input id="17" class="col-md-10 row float future">
+    <div class="col-md-1 row hour float" data-time="17">5pm</div>
+    <input id="17" class="col-md-10 row float input"  data-index="9">
     <Button class="col-md-1 saveBtn row float" value="17">Btn</Button>
   </div>
 
@@ -81,33 +81,31 @@
     console.log(currentHour)
     //currentHour gives a 24-hour integer on current time. 
 
-    //trying to asign each row with class col-md-10 to a 24 hour time and then comparing that with the currentHour variable but unsuccessful
-    //attempt1
-    $(".savBtn").each(function () {
-      var buttonValue = $(this).val();
-      console.log(buttonValue)
-      if (parseInt(buttonValue) < currentHour) {
-        $(".col-md-10").addClass("past");
-      }
+    $(".saveBtn").click(function(e){
+      var ele = $(e.target).prev();
+      var index = ele.attr("data-index");
+      var value = ele.val();
+      localStorage.setItem(index,value);
     })
 
-//attempt 2
-// var numberOptions = [9, 10, 11, 12, 13, 14, 15]
-//     for (var i; i < numberOptions.length; i++) {
-//       var testing = $(".col-md-10");
-//       testing.attr("data-rowvalue", numberOptions[i]);
+    $(".hour").each(function(){
+      var time = parseInt($(this).attr("data-time"));
+      if(time < currentHour) {
+        $(this).next().addClass("past");
+      } else if (time === currentHour) {
+        $(this).next().addClass("present")
+      } else {
+        $(this).next().addClass("future")
+      }
+    });
 
-//       if (testing < currentHour) {
-//         $(".col-md-10").addClass("past");
-//       }
-//       else if (testing === curentHour); {
-//         $(".col-md-10").addClass("present");
-//       }
-//     }
-
-
-
-
+    $(".input").each(function() {
+      var index = $(this).attr("data-index");
+      var value = localStorage.getItem(index);
+      if(value) {
+        $(this).val(value);
+      }
+    })
 
 
 
